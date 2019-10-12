@@ -23,7 +23,7 @@ ENV DUMMY_UID 1000
 RUN addgroup -S dummy && adduser -S -G dummy -u ${DUMMY_UID} dummy
 
 # httpd + aria2
-RUN apk add --no-cache busybox-extras aria2 su-exec
+RUN apk add --no-cache busybox busybox-extras aria2 su-exec
 
 RUN mkdir -p /ariang/www && mkdir -p /ariang/bin
 WORKDIR /ariang
