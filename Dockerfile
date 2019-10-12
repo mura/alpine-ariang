@@ -22,17 +22,18 @@ ENV DUMMY_UID 1000
 # less priviledge user, the id should map the user the downloaded files belongs to
 RUN addgroup -S dummy && adduser -S -G dummy -u ${DUMMY_UID} dummy
 
-# webui + aria2
+# httpd + aria2
 RUN apk add --no-cache busybox-extras aria2 su-exec
 
-RUN mkdir /ariang
+RUN mkdir -p /ariang/www && mkdir -p /ariang/bin
+WORKDIR /ariang
 
 # copy built goreman
-COPY --from=build /work/bin/goreman /usr/local/bin/goreman
-COPY --from=build /work/index.html /ariang/index.html
+COPY --from=build /work/bin/goreman /ariang/bin/goreman
+COPY --from=build /work/index.html /ariang/www/index.html
 
 # goreman setup
-RUN echo "web: su-exec dummy:dummy /bin/busybox-extras httpd -f -p ${HTTPD_PORT} -h /ariang" > Procfile && \
+RUN echo "web: su-exec dummy:dummy /bin/busybox-extras httpd -f -p ${HTTPD_PORT} -h /ariang/www" > Procfile && \
   echo "backend: su-exec dummy:dummy /usr/bin/aria2c --enable-rpc --rpc-listen-all --rpc-allow-origin-all --rpc-listen-port=${RPC_PORT} --dir=/data" >> Procfile
 
 # aria2 downloads directory
@@ -42,4 +43,4 @@ VOLUME /data
 EXPOSE ${RPC_PORT}/tcp ${HTTPD_PORT}/tcp
 
 CMD ["start"]
-ENTRYPOINT ["/usr/local/bin/goreman"]
+ENTRYPOINT ["/ariang/bin/goreman"]
