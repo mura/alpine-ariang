@@ -25,11 +25,11 @@ RUN addgroup -S dummy && adduser -S -G dummy -u ${DUMMY_UID} dummy
 # httpd + aria2
 RUN apk add --no-cache busybox busybox-extras aria2 su-exec
 
-RUN mkdir -p /ariang/www && mkdir -p /ariang/bin
+RUN mkdir -p /ariang/www
 WORKDIR /ariang
 
 # copy built goreman
-COPY --from=build /work/bin/goreman /ariang/bin/goreman
+COPY --from=build /work/bin/goreman /usr/local/bin/goreman
 COPY --from=build /work/index.html /ariang/www/index.html
 
 # goreman setup
@@ -43,4 +43,4 @@ VOLUME /data
 EXPOSE ${RPC_PORT}/tcp ${HTTPD_PORT}/tcp
 
 CMD ["start"]
-ENTRYPOINT ["/ariang/bin/goreman"]
+ENTRYPOINT ["/usr/local/bin/goreman"]
