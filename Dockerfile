@@ -4,7 +4,7 @@ RUN apk add --no-cache git curl unzip
 
 # goreman supervisor build latest
 WORKDIR /work
-RUN export GOPATH=/work && go get github.com/mattn/goreman
+RUN export GOPATH=/work && export CGO_ENABLED=0 && go get github.com/mattn/goreman
 
 # AriaNg install latest
 RUN GITHUB_REPO="https://github.com/mayswind/AriaNg" \
