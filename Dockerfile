@@ -1,4 +1,4 @@
-FROM golang:1.13-alpine3.10 as build
+FROM golang:1.13-alpine3.11 as build
 
 RUN apk add --no-cache git curl unzip
 
@@ -12,7 +12,7 @@ RUN GITHUB_REPO="https://github.com/mayswind/AriaNg" \
   && curl -L $GITHUB_REPO"/releases/download/"$LATEST"/AriaNg-"$LATEST"-AllInOne.zip" > ariang.zip \
   && unzip ariang.zip
 
-FROM alpine:3.10
+FROM alpine:3.11
 
 # customizable values
 ENV RPC_PORT 6800
