@@ -18,6 +18,7 @@ FROM alpine:3.11
 ENV RPC_PORT 6800
 ENV HTTPD_PORT 8080
 ENV DUMMY_UID 1000
+ENV EXTRA_OPTS
 
 # less priviledge user, the id should map the user the downloaded files belongs to
 RUN addgroup -S dummy && adduser -S -G dummy -u ${DUMMY_UID} dummy
