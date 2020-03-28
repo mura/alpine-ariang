@@ -33,9 +33,8 @@ WORKDIR /ariang
 COPY --from=build /work/bin/goreman /usr/local/bin/goreman
 COPY --from=build /work/index.html /ariang/www/index.html
 
-# goreman setup
-RUN echo "web: su-exec dummy:dummy /bin/busybox-extras httpd -f -p ${HTTPD_PORT} -h /ariang/www" > Procfile && \
-  echo "backend: su-exec dummy:dummy /usr/bin/aria2c --enable-rpc --rpc-listen-all --rpc-allow-origin-all --rpc-listen-port=${RPC_PORT} ${EXTRA_OPTS} --dir=/data" >> Procfile
+COPY endpoint.sh /endpoint.sh
+RUN chmod 755 /endpoint.sh
 
 # aria2 downloads directory
 VOLUME /data
@@ -43,5 +42,4 @@ VOLUME /data
 # IP port listing:
 EXPOSE ${RPC_PORT}/tcp ${HTTPD_PORT}/tcp
 
-CMD ["start"]
-ENTRYPOINT ["/usr/local/bin/goreman"]
+ENTRYPOINT ["/endpoint.sh"]
