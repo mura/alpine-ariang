@@ -12,7 +12,7 @@ if [ "$1" = 'aria2c' ]; then
     exec goreman start
   else
     echo 'Only launch aria2.'
-    exec aria2 "$@"
+    exec aria2c "$@"
   fi
 fi
 
