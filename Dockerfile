@@ -22,6 +22,7 @@ FROM debian:buster-slim
 # customizable values
 ENV RPC_PORT 6800
 ENV HTTPD_PORT 8080
+ENV USE_HTTPD true
 
 # persistent / runtime deps
 RUN set -eux; \
